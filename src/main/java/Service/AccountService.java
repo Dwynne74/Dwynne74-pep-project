@@ -2,6 +2,7 @@ package Service;
 
 import DAO.AccountDAO;
 import Model.Account;
+import Model.Message;
 
 public class AccountService {
     private AccountDAO accountDAO;
@@ -15,6 +16,15 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
-        return accountDAO.insertAccount();
+        if(accountDAO.getAccountByUsername(account.getUsername()) == null || account.getUsername().length() > 0 
+        || account.getPassword().length() > 3){
+            return accountDAO.insertAccount(account);
+        } else {
+            return null;
+        }
+    }
+
+    public Message getMessageByUser(String username) {
+        return accountDAO.getMessageByUser(username);
     }
 }
