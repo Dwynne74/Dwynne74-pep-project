@@ -16,8 +16,8 @@ public class AccountService {
     }
 
     public Account addAccount(Account account){
-        if(accountDAO.getAccountByUsername(account.getUsername()) == null || account.getUsername().length() > 0 
-        || account.getPassword().length() > 3){
+        if(accountDAO.usernameAlreadyExist(account.getUsername()) == false && account.getUsername().length() > 0 
+        && account.getPassword().length() > 3){
             return accountDAO.insertAccount(account);
         } else {
             return null;

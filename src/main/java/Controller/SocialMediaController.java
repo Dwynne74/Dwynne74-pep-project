@@ -87,8 +87,8 @@ public class SocialMediaController {
             Account account = mapper.readValue(context.body(), Account.class);
             Account newAccount = accountService.addAccount(account);
             if(newAccount != null) {
-                context.json(newAccount);
                 context.status(200);
+                context.json(newAccount);
             } else {
                 context.status(400);
             }

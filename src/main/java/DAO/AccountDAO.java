@@ -19,11 +19,12 @@ public class AccountDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
 
-            ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
-                Account newAccount = new Account(rs.getString("username"), rs.getString("password"));
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if(rs.next()){
+                int generatedAccountId = rs.getInt(1);
+                Account newAccount = new Account(generatedAccountId, account.getUsername(), account.getPassword());
                 return newAccount;
             }
             
@@ -33,8 +34,9 @@ public class AccountDAO {
         return null;
     }
 
-    public Account getAccountByUsername(String userName){
+    public boolean usernameAlreadyExist(String userName){
         Connection connection = ConnectionUtil.getConnection();
+
         try {
             String sql = "SELECT * FROM account WHERE username = ?;";
             
@@ -42,14 +44,14 @@ public class AccountDAO {
             preparedStatement.setString(1, userName);
 
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
-                Account account = new Account(rs.getString("username"), rs.getString("password"));
-                return account;
-            }
+            if(rs.next()){
+                return true;
+            } 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+
+        return false;
     }
 
     public Message getMessageByUser(String username) {
