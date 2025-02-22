@@ -57,6 +57,7 @@ public class SocialMediaController {
         this.messageService = new MessageService();
     }
     
+    // Use these to determine what to do with the methods
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -99,7 +100,15 @@ public class SocialMediaController {
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void verifyAccountLoginHandler(Context context) {
-        // context.json("sample text");
+        String username = context.pathParam("username");
+        String password = context.pathParam("password");
+        Account account = accountService.getAccountVerified(username, password);
+        if(account != null){
+            context.status(200);
+            context.json(account);
+        } else {
+            context.status(401);
+        }
     }
 
     /**
@@ -155,7 +164,7 @@ public class SocialMediaController {
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void getMessageByUserHandler(Context context) {
-        String username = context.pathParam("username");
+        String username = context.pathParam("username"); // Use messages instead
         Message message = accountService.getMessageByUser(username);
         context.status(200);
         if(message != null){

@@ -15,7 +15,6 @@ public class Main {
 
         AccountDAO accountDAO = new AccountDAO();
         // Testing user duplicate
-        
         // System.out.println(accountDAO.usernameAlreadyExist("testuser1"));
 
         // Testing creating account
@@ -23,7 +22,10 @@ public class Main {
         // System.out.println(accountDAO.insertAccount(account));
 
         // Testing get message with user
-        System.out.println(accountDAO.getMessageByUser("testuser1"));
+        // System.out.println(accountDAO.getMessageByUser("testuser1"));
+
+        // Test verify account
+        System.out.println(accountDAO.getAccountVerified("testuser1", "password"));
 
     }
 }
