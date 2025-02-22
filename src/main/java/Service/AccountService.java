@@ -25,6 +25,9 @@ public class AccountService {
     }
 
     public Message getMessageByUser(String username) {
+        if(accountDAO.usernameAlreadyExist(username) == false) {
+            return null;
+        }
         return accountDAO.getMessageByUser(username);
     }
 }

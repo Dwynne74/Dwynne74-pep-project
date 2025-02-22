@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import Model.Account;
 import Model.Message;
@@ -16,13 +17,13 @@ public class AccountDAO {
         try {
             String sql = "INSERT INTO account(username, password) VALUES(?, ?);";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            if(rs.next()){
+            while(rs.next()){
                 int generatedAccountId = rs.getInt(1);
                 Account newAccount = new Account(generatedAccountId, account.getUsername(), account.getPassword());
                 return newAccount;
