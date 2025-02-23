@@ -28,4 +28,17 @@ public class MessageService {
         return messageDAO.getMessageById(message_id);
     }
 
+    public Message createNewMessage(Message message) {
+        if(messageDAO.postedByExist(message.getPosted_by()) == true && message.getMessage_text().length() > 0
+        && message.getMessage_text().length() <= 255) {
+            return messageDAO.createNewMessage(message);
+        } else {
+            return null;
+        }
+    }
+
+    public Message getMessageByUser(int posted_by) {
+        return messageDAO.getMessageByUser(posted_by);
+    }
+
 }

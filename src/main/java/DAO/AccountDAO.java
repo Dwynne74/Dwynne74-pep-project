@@ -55,26 +55,6 @@ public class AccountDAO {
         return false;
     }
 
-    public Message getMessageByUser(String username) {
-        Connection connection = ConnectionUtil.getConnection();
-        try {
-            String sql = "SELECT message.message_id, message.posted_by, message.message_text, message.time_posted_epoch "
-            + "FROM message JOIN account ON message.posted_by = account.account_id "
-            + "WHERE account.username = ?;";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, username);
-            ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
-                Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"),
-                rs.getString("message_text"), rs.getLong("time_posted_epoch"));
-                return message;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-
     public Account getAccountVerified(Account account) {
         Connection connection = ConnectionUtil.getConnection();
 

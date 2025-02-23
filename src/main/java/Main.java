@@ -28,5 +28,6 @@ public class Main {
         // Test verify account
         System.out.println(accountDAO.getAccountVerified(testAccount));
 
+
     }
 }

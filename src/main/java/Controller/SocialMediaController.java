@@ -99,13 +99,12 @@ public class SocialMediaController {
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * @throws JsonProcessingException 
-     * @throws JsonMappingException 
      */
     private void verifyAccountLoginHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(context.body(), Account.class);
         Account verifyAccount = accountService.getAccountVerified(account);
-        if(account != null){
+        if(verifyAccount != null){
             context.status(200);
             context.json(verifyAccount);
         } else {
@@ -116,9 +115,18 @@ public class SocialMediaController {
     /**
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException 
      */
-    private void createNewMessageHandler(Context context) {
-        // context.json("sample text");
+    private void createNewMessageHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(context.body(), Message.class);
+        Message newMessage = messageService.createNewMessage(message);
+        if(newMessage != null) {
+            context.status(200);
+            context.json(newMessage);
+        } else {
+            context.status(400);
+        }
     }
 
     /**
@@ -166,8 +174,8 @@ public class SocialMediaController {
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void getMessageByUserHandler(Context context) {
-        String username = context.pathParam("username"); // Use messages instead
-        Message message = accountService.getMessageByUser(username);
+        int postedBy = Integer.parseInt(context.pathParam("posted_by")); // Use messages instead
+        Message message = messageService.getMessageByUser(postedBy);
         context.status(200);
         if(message != null){
             context.json(message);
