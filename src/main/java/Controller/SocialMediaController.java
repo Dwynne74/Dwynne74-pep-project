@@ -98,14 +98,16 @@ public class SocialMediaController {
     /**
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException 
+     * @throws JsonMappingException 
      */
-    private void verifyAccountLoginHandler(Context context) {
-        String username = context.pathParam("username");
-        String password = context.pathParam("password");
-        Account account = accountService.getAccountVerified(username, password);
+    private void verifyAccountLoginHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+        Account verifyAccount = accountService.getAccountVerified(account);
         if(account != null){
             context.status(200);
-            context.json(account);
+            context.json(verifyAccount);
         } else {
             context.status(401);
         }

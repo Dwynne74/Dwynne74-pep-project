@@ -75,20 +75,20 @@ public class AccountDAO {
         return null;
     }
 
-    public Account getAccountVerified(String username, String password) {
+    public Account getAccountVerified(Account account) {
         Connection connection = ConnectionUtil.getConnection();
 
         try {
             String sql = "SELECT * FROM account WHERE username = ? AND password = ?;";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
 
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
-                Account account = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));
-                return account;
+                Account verifiedAccount = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));
+                return verifiedAccount;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

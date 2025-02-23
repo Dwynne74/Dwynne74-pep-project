@@ -31,7 +31,7 @@ public class AccountService {
         return accountDAO.getMessageByUser(username);
     }
 
-    public Account getAccountVerified(String username, String password) {
-        return accountDAO.getAccountVerified(username, password);
+    public Account getAccountVerified(Account account) {
+        return accountDAO.getAccountVerified(account);
     }
 }
