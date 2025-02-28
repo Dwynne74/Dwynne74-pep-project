@@ -81,18 +81,17 @@ public class SocialMediaController {
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * @throws JsonProcessingException 
-     * @throws JsonMappingException 
      */
     private void createAccountHandler(Context context) throws JsonProcessingException {
-            ObjectMapper mapper = new ObjectMapper();
-            Account account = mapper.readValue(context.body(), Account.class);
-            Account newAccount = accountService.addAccount(account);
-            if(newAccount != null) {
-                context.status(200);
-                context.json(newAccount);
-            } else {
-                context.status(400);
-            }
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+        Account newAccount = accountService.addAccount(account);
+        if(newAccount != null) {
+            context.status(200);
+            context.json(newAccount);
+        } else {
+            context.status(400);
+        }
     }
 
     /**
@@ -169,11 +168,20 @@ public class SocialMediaController {
     }
 
     /**
-     * This is an example handler for an example endpoint.
+     * Update the message(if exists) using the message_id from a user
      * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException 
      */
-    private void updateMessageByIdHandler(Context context) {
-        // context.json("sample text");
+    private void updateMessageByIdHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message messageToUpdate = mapper.readValue(context.body(), Message.class);
+        Message updatedMessage = messageService.updateMessageById(messageToUpdate, messageToUpdate.getMessage_id());
+        if(updatedMessage != null){
+            context.status(200);
+            context.json(updatedMessage);
+        } else {
+            context.status(400);
+        }
     }
 
     /**
