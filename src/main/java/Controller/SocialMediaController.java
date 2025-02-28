@@ -154,11 +154,18 @@ public class SocialMediaController {
         }
     }
     /**
-     * This is an example handler for an example endpoint.
+     * This method uses the message_id from the message table to delete a message
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void deleteMessageByIdHandler(Context context) {
-        // context.json("sample text");
+        int messageId = Integer.parseInt(context.pathParam("message_id"));
+        Message deletedMessage = messageService.deleteMessageById(messageId);
+        context.status(200);
+        if(deletedMessage != null) {
+            context.json(deletedMessage);
+        } else {
+            context.json("");
+        }
     }
 
     /**
@@ -174,8 +181,8 @@ public class SocialMediaController {
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void getMessageByUserHandler(Context context) {
-        int postedBy = Integer.parseInt(context.pathParam("posted_by")); // Use messages instead
-        Message message = messageService.getMessageByUser(postedBy);
+        int accountId = Integer.parseInt(context.pathParam("account_id")); // account_id == posted_by
+        List<Message> message = messageService.getMessageByUser(accountId);
         context.status(200);
         if(message != null){
             context.json(message);

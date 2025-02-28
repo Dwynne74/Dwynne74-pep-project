@@ -1,5 +1,6 @@
 import Controller.SocialMediaController;
 import DAO.AccountDAO;
+import DAO.MessageDAO;
 import Model.Account;
 import io.javalin.Javalin;
 
@@ -14,7 +15,8 @@ public class Main {
         app.start(8080);
 
         AccountDAO accountDAO = new AccountDAO();
-        Account testAccount = new Account("testuser1", "passwor");
+        MessageDAO messageDAO = new MessageDAO();
+        Account testAccount = new Account("testuser1", "password");
         // Testing user duplicate
         // System.out.println(accountDAO.usernameAlreadyExist("testuser1"));
 
@@ -23,10 +25,10 @@ public class Main {
         // System.out.println(accountDAO.insertAccount(account));
 
         // Testing get message with user
-        // System.out.println(accountDAO.getMessageByUser("testuser1"));
+        System.out.println(messageDAO.getMessageByUser(1));
 
         // Test verify account
-        System.out.println(accountDAO.getAccountVerified(testAccount));
+        // System.out.println(accountDAO.getAccountVerified(testAccount));
 
 
     }

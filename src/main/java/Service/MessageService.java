@@ -37,8 +37,18 @@ public class MessageService {
         }
     }
 
-    public Message getMessageByUser(int posted_by) {
-        return messageDAO.getMessageByUser(posted_by);
+    public List<Message> getMessageByUser(int account_id) {
+        return messageDAO.getMessageByUser(account_id);
+    }
+
+    public Message deleteMessageById(int messageId) {
+        Message deletedMessage = messageDAO.getMessageById(messageId);
+        if(deletedMessage != null){
+            messageDAO.deleteMessageById(messageId);
+            return deletedMessage;
+        } else {
+            return null;
+        }
     }
 
 }
