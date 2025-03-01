@@ -18,17 +18,17 @@ public class Main {
         MessageDAO messageDAO = new MessageDAO();
         Account testAccount = new Account("testuser1", "password");
         // Testing user duplicate
-        // System.out.println(accountDAO.usernameAlreadyExist("testuser1"));
+        System.out.println(accountDAO.usernameAlreadyExist("testuser1"));
 
         // Testing creating account
-        // Account account = new Account("Denzel", "Password");
-        // System.out.println(accountDAO.insertAccount(account));
+        Account account = new Account("Denzel", "Password");
+        System.out.println(accountDAO.insertAccount(account));
 
         // Testing get message with user
         System.out.println(messageDAO.getMessageByUser(1));
 
         // Test verify account
-        // System.out.println(accountDAO.getAccountVerified(testAccount));
+        System.out.println(accountDAO.getAccountVerified(testAccount));
 
 
     }
