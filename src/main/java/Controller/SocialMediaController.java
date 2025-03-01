@@ -3,7 +3,6 @@ package Controller;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
@@ -13,41 +12,6 @@ import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-/**
- * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
- * found in readme.md as well as the test cases. You should
- * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
- */
-
- /**
-  * Endpounts:
-  * Create a new account: POST localhost:8080/register. 
-  * The body will contain a representation of a JSON Account, but will not contain an account_id.
-  *
-  * Verify login: POST localhost:8080/login.
-  * The request body will contain a JSON representation of an Account, not containing an account_id.
-  *
-  * Create new Message: POST localhost:8080/messages.
-  * The request body will contain a JSON representation of a message, 
-  * which should be persisted to the database, but will not contain a message_id.
-  *
-  * Retrieve all new messages: GET localhost:8080/messages.
-  * The response body should contain a JSON representation of a list containing all messages retrieved from the database.
-  *
-  * Retrieve message by ID: GET localhost:8080/messages/{message_id}.
-  * The response body should contain a JSON representation of the message identified by the message_id
-  *
-  * Delete message by ID: DELETE localhost:8080/messages/{message_id}.
-  * The deletion of an existing message should remove an existing message from the database.
-  *
-  * Update a message text by ID: PATCH localhost:8080/messages/{message_id}.
-  * The request body should contain a new message_text values to replace the message identified by message_id. 
-  * The request body can not be guaranteed to contain any other information.
-  *
-  * Retrieve message by user: GET localhost:8080/accounts/{account_id}/messages.
-  * The response body should contain a JSON representation of a list containing all messages posted by a particular user, 
-  * which is retrieved from the database.
-  */
 public class SocialMediaController {
     AccountService accountService;
     MessageService messageService;
@@ -78,7 +42,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This is an example handler for an example endpoint.
+     * Create a new account.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * @throws JsonProcessingException 
      */
@@ -95,7 +59,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This is an example handler for an example endpoint.
+     * Verify the login of the account.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * @throws JsonProcessingException 
      */
@@ -112,7 +76,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This is an example handler for an example endpoint.
+     * Create a new message.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * @throws JsonProcessingException 
      */
@@ -129,7 +93,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This is an example handler for an example endpoint.
+     * Retrieve all messages that exists in the database.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void getAllMessagesHandler(Context context) {
@@ -138,7 +102,7 @@ public class SocialMediaController {
     }
     
     /**
-     * This is an example handler for an example endpoint.
+     * Retrieve the messages using the message_id.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * @throws JsonProcessingException 
      */
@@ -153,7 +117,7 @@ public class SocialMediaController {
         }
     }
     /**
-     * This method uses the message_id from the message table to delete a message
+     * Delete a message using the message_id.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void deleteMessageByIdHandler(Context context) {
@@ -168,14 +132,15 @@ public class SocialMediaController {
     }
 
     /**
-     * Update the message(if exists) using the message_id from a user
+     * Update the message(if exists) using the message_id from a user.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * @throws JsonProcessingException 
      */
     private void updateMessageByIdHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Message messageToUpdate = mapper.readValue(context.body(), Message.class);
-        Message updatedMessage = messageService.updateMessageById(messageToUpdate, messageToUpdate.getMessage_id());
+        int messageId = Integer.parseInt(context.pathParam("message_id"));
+        Message updatedMessage = messageService.updateMessageById(messageToUpdate, messageId);
         if(updatedMessage != null){
             context.status(200);
             context.json(updatedMessage);
@@ -185,7 +150,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This is an example handler for an example endpoint.
+     * Retrieve messages by a user using account_id.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
     private void getMessageByUserHandler(Context context) {

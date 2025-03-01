@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Model.Account;
-import Model.Message;
 import Util.ConnectionUtil;
 
 public class AccountDAO {

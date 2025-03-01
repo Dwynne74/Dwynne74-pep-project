@@ -20,10 +20,6 @@ public class MessageService {
         return messageDAO.getAllMessages();
     }
 
-    public Message getMessage() {
-        return messageDAO.getMessage();
-    }
-
     public Message getMessageById(int message_id) {
         return messageDAO.getMessageById(message_id);
     }
@@ -55,7 +51,8 @@ public class MessageService {
         Message currentMessage = messageDAO.getMessageById(messageId);
         if(currentMessage != null && messageToUpdate.getMessage_text().length() > 0
         && messageToUpdate.getMessage_text().length() <= 255) {
-            return messageDAO.updateMessageById(messageToUpdate, messageId);
+        messageDAO.updateMessageById(messageToUpdate, messageId);
+        return messageDAO.getMessageById(messageId);
         } else {
             return null;
         }

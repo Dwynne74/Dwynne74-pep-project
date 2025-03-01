@@ -2,7 +2,6 @@ package Service;
 
 import DAO.AccountDAO;
 import Model.Account;
-import Model.Message;
 
 public class AccountService {
     private AccountDAO accountDAO;
